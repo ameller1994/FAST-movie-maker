@@ -5,10 +5,8 @@ import os
 import numpy as np
 from numpy import where
 
-#folder = '/project/bowmanlab/ameller/fast-sims/ihm/FASTDistance_ihm_bhfh_wt'
 folder = '/project/bowmanlab/ameller/fast-sims/ihm/FASTDistance_lad_Nterm_wt_5n69_min'
-#folder = '/project/bowmore/mizimmer/documents/gromacs_simulations/adaptive_sampling/ihm/FASTDistance_ihm_s1s2_r904c'
-#folder = '/project/bowmore/mizimmer/documents/gromacs_simulations/adaptive_sampling/ihm/FASTDistance_ihm_s1s2_r453c/'
+out_folder = 'fast_movie_LA_10.xtc'
 
 # Setting up number of rounds, sims each round, file names, etc
 dirs =  next(os.walk(folder))[1]
@@ -20,20 +18,13 @@ sims_each_round = len(next(os.walk(gen0_path))[1])
 total_sims = total_rounds*sims_each_round
 dist_file = os.path.join(folder, 'msm/rankings' , 'distance_per_state'+ str(total_rounds-1)+'.npy') #must be customized
 start_state = np.flip(np.argsort(np.load(dist_file)))[0] #must be customzed
-#start_state = 2
 print(total_rounds,sims_each_round,start_state)
-## or ##
-#total_rounds = 13
-#total_sims = 10
-#sims_each_round = total_rounds*total_sims
-#start_state 
+
 
 
 assigs = ra.load(os.path.join(folder, 'msm/data/assignments.h5'))
 pdb = md.load(os.path.join(folder, 'msm/prot_masses.pdb'))
-#pdb =  md.load(os.path.join(folder, 'msm/centers_masses/state000000-00.pdb'))
 
-listy=[]
 def find_new_start_state(prev_start_state, round_num):
     # define window in assignments file for each round to find where state occurs
     
@@ -50,7 +41,6 @@ def slice_traj(start_state, r):
     # add to traj file
     
     traj, idx, start_state = find_new_start_state(start_state, r)
-    listy.append((traj, idx, start_state))
     xtc_file = os.path.join(folder, 
                              'msm/trajectories', 
                              'trj_gen'+str(total_rounds-r-1).zfill(3)+'_kid'+str(traj).zfill(3)+'.xtc')
@@ -85,5 +75,4 @@ full_traj.superpose(pdb)#, atom_indices=atoms, ref_atom_indices=atoms)
 #so output xtc isn't too large to load
 full_traj_sliced = full_traj[0:len(full_traj):10]
 
-full_traj_sliced.save_xtc('fast_movie_LA_10.xtc')
-#np.save('list_r453c.npy', listy)   
+full_traj_sliced.save_xtc(out_folder)
