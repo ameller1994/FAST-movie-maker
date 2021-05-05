@@ -5,6 +5,7 @@ import os
 import numpy as np
 from numpy import where
 
+# Artur feedback
 folder = '/project/bowmanlab/ameller/fast-sims/ihm/FASTDistance_lad_Nterm_wt_5n69_min'
 out_folder = 'fast_movie_LA_10.xtc'
 
