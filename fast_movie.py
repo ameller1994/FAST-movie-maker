@@ -44,9 +44,9 @@ def slice_traj(folder, assigs, pdb, start_state, round_num, sims_each_round):
 ###################
 
 # input FAST trajectory
-folder = '/project/bowmanlab/j.lotthammer/Simulations/myosin/phos_release/5n6a-hybrid/FASTDistance_phos_release_5n6a'
+folder = '/project/bowmanlab/j.lotthammer/Simulations/myosin/cleft_opening/wt/fast/FAST_cleft_opening_7jhj'
 # where to write output xtc
-out_path = 'phos_release.xtc'
+out_path = 'cleft_opening.xtc'
 # boolean flag for whether or not objective is maximized
 maximizing_objective = True
 # objective name
@@ -79,7 +79,7 @@ pdb = md.load(os.path.join(folder, 'msm/prot_masses.pdb'))
 
 traj_list = []
 round_num = total_rounds - 1
-while (round_num != 0):
+while (round_num > 0):
     start_state, round_num, tmp_traj_slce = slice_traj(folder, assigs, pdb, start_state, round_num, sims_each_round)
     print(tmp_traj_slce)
     traj_list.append(tmp_traj_slce)
